@@ -2,20 +2,28 @@ package com.example.cryptocoffee.blockchainapi;
 
 import com.example.cryptocoffee.blockchainapi.configuration.Web3jProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.actuate.trace.http.HttpTrace;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.utils.Convert;
 
+import javax.xml.ws.Response;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class Wallet {
@@ -48,4 +56,26 @@ public class Wallet {
 
         return web3j.ethAccounts().send().getAccounts();
     }
+
+
+    @CrossOrigin("*")
+    @RequestMapping(method = RequestMethod.GET, path = "/wallet/{id}")
+    public ResponseEntity<?> checkWalletExist(@PathVariable String id) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+
+        List<String> accounts = web3j.ethAccounts().send().getAccounts();
+        if(accounts.contains(id)){
+         return   new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(method = RequestMethod.GET, path = "/wallet/{id}/balance")
+    public ResponseEntity<> getBalance(@PathVariable String id) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException, ExecutionException, InterruptedException {
+
+        EthGetBalance balance = web3j.ethGetBalance(id, DefaultBlockParameterName.LATEST).sendAsync().get();
+        BigDecimal ethBalance = Convert.fromWei(balance.getBalance().toString(), Convert.Unit.ETHER);
+        return new ResponseEntity<BigDecimal>(ethBalance,HttpStatus.OK);
+    }
+
 }
