@@ -71,7 +71,7 @@ public class Wallet {
 
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/wallet/{id}/balance")
-    public ResponseEntity<> getBalance(@PathVariable String id) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<BigDecimal> getBalance(@PathVariable String id) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException, ExecutionException, InterruptedException {
 
         EthGetBalance balance = web3j.ethGetBalance(id, DefaultBlockParameterName.LATEST).sendAsync().get();
         BigDecimal ethBalance = Convert.fromWei(balance.getBalance().toString(), Convert.Unit.ETHER);
