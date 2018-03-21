@@ -1,24 +1,23 @@
 package com.example.cryptocoffee.blockchainapi;
 
 import com.example.cryptocoffee.blockchainapi.configuration.Web3jProperties;
+import com.example.cryptocoffee.blockchainapi.module.User;
+import com.example.cryptocoffee.blockchainapi.repository.UserRepository;
+import com.example.cryptocoffee.blockchainapi.request.WalletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.utils.Convert;
 
-import javax.xml.ws.Response;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -32,21 +31,36 @@ public class Wallet {
     private Web3jProperties properties;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     Web3j web3j;
 
     @CrossOrigin("*")
-    @RequestMapping(method = RequestMethod.POST, path = "/wallet")
-    public void createWallet() throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    @RequestMapping(method = RequestMethod.POST, value = {"/wallet", "/customer"})
+    public ResponseEntity createWallet(@RequestBody WalletRequest request) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
 
-        String walletFileName = WalletUtils.generateFullNewWalletFile("twenty20",new File(properties.getKeystore()));
+        String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
 
         System.out.println(walletFileName);
 
         String[] fetchAddress=walletFileName.split("--");
-        String getAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
+        String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
 
-        System.out.println("walletFile Address>>>>>" + "0x" + getAddress);
+        System.out.println("walletFile Address>>>>>" + "0x" + walletAddress);
         System.out.println(web3j.ethAccounts().send().getAccounts());
+        User user = new User();
+        user.setRfid(request.getRfid());
+        user.setFirstName(request.getFirstName());
+        user.setSurName(request.getSurName());
+        user.setCorporateKey(request.getCorporateKey());
+        user.setGoogleMail(request.getGoogleMail());
+        user.setIngMail(request.getIngMail());
+        user.setWalletAddress(walletAddress);
+        System.out.println(user);
+        userRepository.save(user);
+
+        return new ResponseEntity(user, HttpStatus.ACCEPTED);
     }
 
     @CrossOrigin("*")
@@ -57,14 +71,13 @@ public class Wallet {
         return web3j.ethAccounts().send().getAccounts();
     }
 
-
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/wallet/{id}")
     public ResponseEntity<?> checkWalletExist(@PathVariable String id) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
 
         List<String> accounts = web3j.ethAccounts().send().getAccounts();
         if(accounts.contains(id)){
-         return   new ResponseEntity<>(HttpStatus.OK);
+            return   new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -77,5 +90,4 @@ public class Wallet {
         BigDecimal ethBalance = Convert.fromWei(balance.getBalance().toString(), Convert.Unit.ETHER);
         return new ResponseEntity<BigDecimal>(ethBalance,HttpStatus.OK);
     }
-
 }

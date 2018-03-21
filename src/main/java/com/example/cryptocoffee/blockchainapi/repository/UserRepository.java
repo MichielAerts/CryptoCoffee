@@ -1,4 +1,13 @@
 package com.example.cryptocoffee.blockchainapi.repository;
 
-public class UserRepository {
+import com.example.cryptocoffee.blockchainapi.module.User;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends CrudRepository<User, String> {
+
+    Optional<User> findByCorporateKey(String corporateKey);
+
+    Optional<User> findById(String rfid);
 }

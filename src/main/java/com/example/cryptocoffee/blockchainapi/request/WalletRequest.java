@@ -1,33 +1,22 @@
 package com.example.cryptocoffee.blockchainapi.request;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class WalletRequest {
 
     private String rfid;
-    private String emailId;
-    private String name;
 
+    private String corporateKey;
 
-    public String getRfid() {
-        return rfid;
-    }
+    private String firstName;
 
-    public void setRfid(String rfid) {
-        this.rfid = rfid;
-    }
+    private String surName;
 
-    public String getEmailId() {
-        return emailId;
-    }
+    private String ingMail;
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
+    private String googleMail;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
