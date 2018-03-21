@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.List;
 
 @RestController
 public class Wallet {
@@ -38,5 +39,13 @@ public class Wallet {
 
         System.out.println("walletFile Address>>>>>" + "0x" + getAddress);
         System.out.println(web3j.ethAccounts().send().getAccounts());
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(method = RequestMethod.GET, path = "/wallet")
+    public List<String> getWallets() throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+
+
+        return web3j.ethAccounts().send().getAccounts();
     }
 }
