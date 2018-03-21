@@ -2,11 +2,9 @@ package com.example.cryptocoffee.blockchainapi;
 
 import com.example.cryptocoffee.blockchainapi.configuration.Web3jProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
@@ -41,7 +39,7 @@ public class Transaction {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.POST, path = "/account")
     public String createAccount() throws Exception {
-        Admin admin = Admin.build(new HttpService("http://127.0.0.1:8042"));
+        Admin admin = Admin.build(new HttpService("http://192.168.0.34:8042"));
         System.out.println("Inside");
 
         File dir = new File(properties.getKeystore());
@@ -60,6 +58,37 @@ public class Transaction {
 
     return "Hello";
     }
+
+    @CrossOrigin("*")
+    @RequestMapping(method = RequestMethod.POST, path = "/transaction/{rfId}")
+    public ResponseEntity payForCoffee(@PathVariable String rfId) throws Exception {
+
+        //TODO
+        //Get wallet address based on rfid
+        String walletAdress = "";
+
+        //Remove first two zeroes
+
+        File dir = new File(properties.getKeystore());
+        FilenameFilter filter = new FilenameFilter() {
+            public boolean accept (File dir, String name) {
+                return name.contains(walletAdress);
+            }
+        };
+
+
+
+        String[] files = dir.list(filter);
+        Credentials credentials = WalletUtils.loadCredentials(rfId,new File(properties.getKeystore()+"/"+files[0]));
+        TransactionReceipt transactionReceipt = Transfer.sendFunds(
+                web3j, credentials, "0xa7acfeb068dd3c9e271c2b3a4a2794c9f185dd1b" ,
+                BigDecimal.valueOf(1.0), Convert.Unit.ETHER).send();
+
+        System.out.println(transactionReceipt.getStatus());
+        return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+
 
     BigInteger getNonce(String address) throws Exception {
         EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(
