@@ -22,6 +22,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -58,9 +59,15 @@ public class Wallet {
         user.setIngMail(request.getIngMail());
         user.setWalletAddress(walletAddress);
         System.out.println(user);
-        userRepository.save(user);
 
-        return new ResponseEntity(user, HttpStatus.ACCEPTED);
+        Optional<User> existingUser = userRepository.findById(request.getRfid());
+        if (existingUser.isPresent()) {
+            String errorMessage = "{\"error\", \"user with this rfid already exists\"}";
+            return new ResponseEntity<>(errorMessage, HttpStatus.ACCEPTED);
+        } else {
+            userRepository.save(user);
+            return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+        }
     }
 
     @CrossOrigin("*")
