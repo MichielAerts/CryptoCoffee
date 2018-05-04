@@ -1,11 +1,11 @@
-package com.example.cryptocoffee.blockchainapi.request;
+package com.example.cryptocoffee.blockchainapi.domain;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class WalletRequest {
+public class UserRequest {
 
     private String rfid;
 
@@ -13,7 +13,7 @@ public class WalletRequest {
 
     private String firstName;
 
-    private String surName;
+    private String lastName;
 
     private String ingMail;
 

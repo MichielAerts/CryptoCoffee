@@ -1,4 +1,4 @@
-package com.example.cryptocoffee.blockchainapi.module;
+package com.example.cryptocoffee.blockchainapi.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,9 +6,6 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 @Entity
 @Getter
@@ -23,7 +20,7 @@ public class User {
 
     private String firstName;
 
-    private String surName;
+    private String lastName;
 
     private String ingMail;
 

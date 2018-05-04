@@ -1,33 +1,29 @@
-package com.example.cryptocoffee.blockchainapi;
+package com.example.cryptocoffee.blockchainapi.controllers;
 
 import com.example.cryptocoffee.blockchainapi.configuration.Web3jProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.admin.Admin;
-import org.web3j.protocol.admin.methods.response.NewAccountIdentifier;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.exceptions.TransactionException;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 
-import javax.xml.ws.Response;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @RestController
-public class Transaction {
+@RequestMapping("/api/cryptoCoffee")
+public class TransactionController {
 
     @Autowired
     private Web3jProperties properties;
@@ -76,8 +72,6 @@ public class Transaction {
             }
         };
 
-
-
         String[] files = dir.list(filter);
         Credentials credentials = WalletUtils.loadCredentials(rfId,new File(properties.getKeystore()+"/"+files[0]));
         TransactionReceipt transactionReceipt = Transfer.sendFunds(
@@ -87,8 +81,6 @@ public class Transaction {
         System.out.println(transactionReceipt.getStatus());
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
-
-
 
     BigInteger getNonce(String address) throws Exception {
         EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(

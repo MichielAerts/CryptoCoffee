@@ -1,6 +1,6 @@
 package com.example.cryptocoffee.blockchainapi.repository;
 
-import com.example.cryptocoffee.blockchainapi.module.User;
+import com.example.cryptocoffee.blockchainapi.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
