@@ -1,5 +1,6 @@
 package com.example.cryptocoffee.blockchainapi.controllers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,8 +20,14 @@ import java.util.regex.Pattern;
 @RequestMapping("/api/cryptoCoffee")
 public class RfidController {
 
-    private static final String RFID_MAP = "/etc/rfids/";
-    private static final String RFID_SCRIPT = "sh /dir/testscript.sh";
+    @Value("${rfid.storage.map}")
+    private String RFID_STORAGE_MAP;
+
+    @Value("${rfid.script.map}")
+    private String RFID_SCRIPT_MAP;
+
+    @Value("${rfid.script.name}")
+    private String RFID_SCRIPT_NAME;
 
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/rfid")
@@ -50,7 +57,7 @@ public class RfidController {
     private String findRfid(UUID uuidCall) throws IOException {
         String rfid = null;
         String uuid = uuidCall.toString();
-        List<String> fileContents = Files.readAllLines(Paths.get(RFID_MAP + uuid));
+        List<String> fileContents = Files.readAllLines(Paths.get(RFID_STORAGE_MAP + uuid));
         Pattern p = Pattern.compile(uuid + ":(?<rfid>\\d+)");
         for (String line : fileContents) {
             Matcher m = p.matcher(line);
@@ -62,7 +69,7 @@ public class RfidController {
     }
 
     private void runScript(UUID uuidCall) throws IOException, InterruptedException {
-        ProcessBuilder pb = new ProcessBuilder(RFID_SCRIPT, uuidCall.toString());
+        ProcessBuilder pb = new ProcessBuilder("sh " + RFID_SCRIPT_MAP + RFID_SCRIPT_NAME, uuidCall.toString());
         Process process = pb.start();
 
         int exitValue = process.waitFor();

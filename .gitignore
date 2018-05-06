@@ -2,6 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 
 Keystore/
+rfids/
 
 ### STS ###
 .apt_generated
