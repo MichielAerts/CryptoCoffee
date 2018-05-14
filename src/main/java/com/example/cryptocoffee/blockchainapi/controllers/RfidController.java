@@ -69,7 +69,7 @@ public class RfidController {
     }
 
     private void runScript(UUID uuidCall) throws IOException, InterruptedException {
-        ProcessBuilder pb = new ProcessBuilder("sh " + RFID_SCRIPT_MAP + RFID_SCRIPT_NAME, uuidCall.toString());
+        ProcessBuilder pb = new ProcessBuilder(RFID_SCRIPT_MAP + RFID_SCRIPT_NAME, uuidCall.toString());
         Process process = pb.start();
 
         int exitValue = process.waitFor();
