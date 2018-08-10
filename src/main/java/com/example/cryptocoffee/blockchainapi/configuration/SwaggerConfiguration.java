@@ -14,10 +14,13 @@ public class SwaggerConfiguration {
 
     @Bean
     public Docket api() {
+        //Find the swagger documentation @ http://localhost:port/swagger-ui.html
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
+
+
     }
 }
