@@ -16,9 +16,8 @@ do
   then
      echo "READER MODE!!!!!"
      echo "Waiting for tag or device..."
-     #rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
-     rfid=$(timeout 1 sleep 2)
-     echo "$rfid"
+     rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
+     echo "Received Rfid ${rfid}"
      #curl http://${apiServerIP}:${apiServerPort}/api/cryptoCoffee/transaction/${rfid}
    fi
 done
