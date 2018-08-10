@@ -6,6 +6,8 @@
 #            //    containing a line with format <uuid>:<retreived rfid>
 #            // 4. return exit status 0 if all is ok.
 
+set -x
+
 registrationModeStatusFile=/home/pi/Documents/Java/CryptoCoffee/scripts/REGISTRATION_MODE
 apiServerIP=localhost
 apiServerPort=8088
@@ -18,6 +20,7 @@ do
      echo "Waiting for tag or device..."
      rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
      echo "Received Rfid ${rfid}"
+     echo "Order coffee for ${rfid}"
      #curl http://${apiServerIP}:${apiServerPort}/api/cryptoCoffee/transaction/${rfid}
    fi
 done
