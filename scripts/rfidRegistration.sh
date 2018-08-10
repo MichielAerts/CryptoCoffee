@@ -21,15 +21,16 @@ rfidStorageMap=/home/pi/Documents/Java/CryptoCoffee/rfids/
 
 rfidCoffeeScript=/home/pi/Documents/Java/CryptoCoffee/scripts/rfidCoffee.sh
 
-if [ -f registrationModeStatusFile ]
+if [ -f $registrationModeStatusFile ]
 then
- pkill -f '${rfidCoffeeScript}'
+ pkill -f rfidCoffee
  echo "REGISTRATION MODE!!!!!"
  echo "Waiting for tag or device..."
- rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
+ rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- )
  echo "Received Rfid ${rfid}"
  echo "create file ${rfidStorageMap}${uuid} with line ${uuid}:${rfid}"
  #echo ${uuid}:${rfid} >> ${rfidStorageMap}${uuid}
+ nohup ./rfidCoffee.sh &
 fi
 
 

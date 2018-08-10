@@ -14,13 +14,16 @@ apiServerPort=8088
 
 while true
 do
-  if [ ! -f registrationModeStatusFile ]
+  if [ ! -f $registrationModeStatusFile ]
   then
      echo "READER MODE!!!!!"
      echo "Waiting for tag or device..."
-     rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
+     rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- )
      echo "Received Rfid ${rfid}"
      echo "Order coffee for ${rfid}"
      #curl http://${apiServerIP}:${apiServerPort}/api/cryptoCoffee/transaction/${rfid}
+   else
+     echo "REGISTRATION MODE!!!"
+     sleep 2
    fi
 done
