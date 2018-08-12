@@ -1,12 +1,10 @@
 package com.example.cryptocoffee.blockchainapi.controllers;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cryptoCoffee")
@@ -16,7 +14,7 @@ public class RfidController {
     private RfidScanner rfidScanner;
 
     @CrossOrigin("*")
-    @RequestMapping(method = RequestMethod.GET, path = "/register/rfid")
+    @RequestMapping(method = RequestMethod.GET, path = "/rfid/registration")
     public ResponseEntity getRfidForRegistration() {
         String rfid = null;
         rfid = rfidScanner.getRfidForRegistration();
@@ -26,5 +24,17 @@ public class RfidController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(method = RequestMethod.POST, path = "/rfid/mode")
+    public ResponseEntity setMode(@RequestBody RegistrationModeRequest request) {
+        rfidScanner.setCoffeeMode(request.isCoffeeMode());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Getter
+    static class RegistrationModeRequest {
+        boolean coffeeMode;
     }
 }

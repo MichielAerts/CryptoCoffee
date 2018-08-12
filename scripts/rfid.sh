@@ -1,10 +1,10 @@
 #!/bin/bash
-#            // script should:
-#            // 1. accept one argument containing the uuid
-#            // 2. retrieve the rfid
-#            // 3. create a file in the rfid_map directory named as the uuid,
-#            //    containing a line with format <uuid>:<retreived rfid>
-#            // 4. return exit status 0 if all is ok.
+# script should:
+# 1. accept one argument containing the uuid
+# 2. retrieve the rfid
+# 3. create a file in the rfid_map directory named as the uuid,
+#    containing a line with format <uuid>:<retreived rfid>
+# 4. return exit status 0 if all is ok.
 
 set -x
 
@@ -15,9 +15,11 @@ then
 fi
 
 uuid=$1
-rfid_storage_map=/home/pi/Documents/Java/CryptoCoffee/rfids/
-fake_rfid=$RANDOM
+rfidStorageMap=/home/pi/Documents/Java/CryptoCoffee/rfids/
 
-sleep 1
-
-echo ${uuid}:${fake_rfid} >> ${rfid_storage_map}${uuid}
+echo "REGISTRATION MODE!!!!!"
+echo "Waiting for tag or device..."
+rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
+echo "Received Rfid ${rfid}"
+echo "create file ${rfidStorageMap}${uuid} with line ${uuid}:${rfid}"
+echo ${uuid}:${rfid} >> ${rfidStorageMap}${uuid}
