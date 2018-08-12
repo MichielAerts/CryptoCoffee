@@ -11,7 +11,7 @@ set -x
 if [ $# -ne 1 ]
 then
   echo "We expect one input argument, the uuid for the call"
-  return 1
+  exit 1
 fi
 
 uuid=$1
@@ -19,7 +19,8 @@ rfidStorageMap=/home/pi/Documents/Java/CryptoCoffee/rfids/
 
 echo "REGISTRATION MODE!!!!!"
 echo "Waiting for tag or device..."
-rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- | sed "s///g")
+rfid=$(explorenfc-basic | grep "ISO14443A UID" | cut -b17- )
 echo "Received Rfid ${rfid}"
 echo "create file ${rfidStorageMap}${uuid} with line ${uuid}:${rfid}"
-echo ${uuid}:${rfid} >> ${rfidStorageMap}${uuid}
+#echo "test" > ${rfidStorageMap}1
+echo "${uuid}:${rfid}" > ${rfidStorageMap}${uuid}
