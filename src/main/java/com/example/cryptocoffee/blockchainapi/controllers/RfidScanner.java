@@ -116,7 +116,7 @@ public class RfidScanner {
         String rfid = null;
         String uuid = uuidCall.toString();
         List<String> fileContents = Files.readAllLines(Paths.get(RFID_STORAGE_MAP + uuid));
-        Pattern p = Pattern.compile(uuid + ":(?<rfid>\\d+)");
+        Pattern p = Pattern.compile(uuid + ":(?<rfid>\\w+)");
         for (String line : fileContents) {
             System.out.println(line);
             Matcher m = p.matcher(line);
