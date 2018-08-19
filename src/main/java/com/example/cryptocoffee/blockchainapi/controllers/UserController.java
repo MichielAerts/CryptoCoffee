@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.crypto.CipherException;
-import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -53,16 +51,16 @@ public class UserController {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.POST, path = "/user")
     public ResponseEntity createUser(@RequestBody UserRequest request) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+        System.out.println(request);
+        //String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
 
-        String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+        //System.out.println(walletFileName);
 
-        System.out.println(walletFileName);
-
-        String[] fetchAddress = walletFileName.split("--");
-        String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
-
+        //String[] fetchAddress = walletFileName.split("--");
+        //String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
+        String walletAddress = "dummyWallet";
         System.out.println("walletFile Address>>>>>" + "0x" + walletAddress);
-        System.out.println(web3j.ethAccounts().send().getAccounts());
+        //System.out.println(web3j.ethAccounts().send().getAccounts());
         User user = new User();
         user.setRfid(request.getRfid());
         user.setFirstName(request.getFirstName());
