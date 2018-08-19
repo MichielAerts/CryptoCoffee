@@ -18,7 +18,7 @@ public class RfidController {
     public ResponseEntity getRfidForRegistration() {
         String rfid = null;
         rfid = rfidScanner.getRfidForRegistration();
-
+        System.out.println("rfid from registration " + rfid);
         if (rfid != null) {
             return new ResponseEntity<>(rfid, HttpStatus.OK);
         } else {
