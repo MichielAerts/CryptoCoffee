@@ -155,6 +155,7 @@ public class RfidScanner {
                     System.out.println("getting rfid in coffee mode");
                     String rfid = getRfid();
                     System.out.println("found rfid " + rfid);
+                    System.out.println("run coffee making script");
                 } catch (InterruptedException e) {
                     System.out.println("interrupted in coffee thread");
                 }
