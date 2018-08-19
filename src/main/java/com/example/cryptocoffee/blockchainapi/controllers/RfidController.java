@@ -20,7 +20,8 @@ public class RfidController {
         rfid = rfidScanner.getRfidForRegistration();
         System.out.println("rfid from registration " + rfid);
         if (rfid != null) {
-            return new ResponseEntity<>(rfid, HttpStatus.OK);
+            String rfidJson = "{\"rfid\" : \"" + rfid + "\"}";
+            return new ResponseEntity<>(rfidJson, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
