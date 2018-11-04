@@ -3,7 +3,7 @@ package com.example.cryptocoffee.blockchainapi.controllers;
 import com.example.cryptocoffee.blockchainapi.configuration.Web3jProperties;
 import com.example.cryptocoffee.blockchainapi.domain.User;
 import com.example.cryptocoffee.blockchainapi.domain.UserRequest;
-import com.example.cryptocoffee.blockchainapi.repository.UserRepository;
+import com.example.cryptocoffee.blockchainapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     Web3j web3j;
@@ -33,12 +33,11 @@ public class UserController {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/user/{id}")
     public ResponseEntity findUser(@PathVariable("id") String id) {
-        Optional<User> user = userRepository.findById(id);
-
+        Optional<User> user = userService.findUserByRfid(id);
         if (user.isPresent()) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
-            user = userRepository.findByCorporateKey(id);
+            user = userService.findByCorporateKey(id);
             if (user.isPresent()) {
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {
@@ -51,32 +50,23 @@ public class UserController {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.POST, path = "/user")
     public ResponseEntity createUser(@RequestBody UserRequest request) throws CipherException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
-        System.out.println(request);
-        //String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+        System.out.println("Request received: " + request);
 
-        //System.out.println(walletFileName);
-
-        //String[] fetchAddress = walletFileName.split("--");
-        //String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
-        String walletAddress = "dummyWallet";
-        System.out.println("walletFile Address>>>>>" + "0x" + walletAddress);
-        //System.out.println(web3j.ethAccounts().send().getAccounts());
-        User user = new User();
-        user.setRfid(request.getRfid());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setCorporateKey(request.getCorporateKey());
-        user.setGoogleMail(request.getGoogleMail());
-        user.setIngMail(request.getIngMail());
-        user.setWalletAddress(walletAddress);
-        System.out.println(user);
-
-        Optional<User> existingUser = userRepository.findById(request.getRfid());
+        Optional<User> existingUser = userService.findUserByRfid(request.getRfid());
         if (existingUser.isPresent()) {
             String errorMessage = "{\"error\", \"user with this rfid already exists\"}";
-            return new ResponseEntity<>(errorMessage, HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         } else {
-            userRepository.save(user);
+            //String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+            //System.out.println(walletFileName);
+            //String[] fetchAddress = walletFileName.split("--");
+            //String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
+            String walletAddress = "dummyWallet";
+            System.out.println("walletFile Address>>>>>" + "0x" + walletAddress);
+            //System.out.println(web3j.ethAccounts().send().getAccounts());
+            User user = new User(request, walletAddress);
+            System.out.println("new user registered: " + user);
+            userService.save(user);
             return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
         }
     }

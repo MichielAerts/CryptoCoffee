@@ -1,6 +1,7 @@
 package com.example.cryptocoffee.blockchainapi.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -28,6 +30,15 @@ public class User {
 
     private String googleMail;
 
+    public User(UserRequest request, String walletAddress) {
+        this.rfid = request.getRfid();
+        this.firstName = request.getFirstName();
+        this.lastName = request.getLastName();
+        this.corporateKey = request.getCorporateKey();
+        this.ingMail = request.getIngMail();
+        this.googleMail = request.getGoogleMail();
+        this.walletAddress = walletAddress;
+    }
 }
 
 

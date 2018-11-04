@@ -93,11 +93,9 @@ public class Web3jAutoConfiguration {
         }
     }
 
-
     @Bean
     @ConditionalOnBean(Web3j.class)
     Web3jHealthIndicator web3jHealthIndicator(Web3j web3j) {
         return new Web3jHealthIndicator(web3j);
     }
-
 }

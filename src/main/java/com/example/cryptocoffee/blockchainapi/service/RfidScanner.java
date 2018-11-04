@@ -1,6 +1,5 @@
-package com.example.cryptocoffee.blockchainapi.controllers;
+package com.example.cryptocoffee.blockchainapi.service;
 
-import com.example.cryptocoffee.blockchainapi.domain.RfidMode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.example.cryptocoffee.blockchainapi.domain.RfidMode.COFFEE;
-import static com.example.cryptocoffee.blockchainapi.domain.RfidMode.REGISTRATION;
+import static com.example.cryptocoffee.blockchainapi.service.RfidScanner.RfidMode.COFFEE;
+import static com.example.cryptocoffee.blockchainapi.service.RfidScanner.RfidMode.REGISTRATION;
 
 @Service
 public class RfidScanner {
@@ -182,5 +181,10 @@ public class RfidScanner {
             }
         }
         Files.deleteIfExists(rfidMap);
+    }
+
+    public enum RfidMode {
+        COFFEE,
+        REGISTRATION;
     }
 }

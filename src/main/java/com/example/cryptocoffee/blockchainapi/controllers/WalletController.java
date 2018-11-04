@@ -32,7 +32,7 @@ public class WalletController {
     public ResponseEntity<?> checkWalletExist(@PathVariable String id) throws IOException {
         List<String> accounts = web3j.ethAccounts().send().getAccounts();
         if(accounts.contains(id)){
-            return   new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

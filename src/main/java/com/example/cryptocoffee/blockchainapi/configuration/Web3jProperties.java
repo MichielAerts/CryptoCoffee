@@ -54,7 +54,6 @@ public class Web3jProperties {
         this.httpTimeoutSeconds = httpTimeoutSeconds;
     }
 
-
     public String getKeystore() {
         return keystore;
     }

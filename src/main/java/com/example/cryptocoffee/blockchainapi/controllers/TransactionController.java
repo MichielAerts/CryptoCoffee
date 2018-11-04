@@ -31,7 +31,6 @@ public class TransactionController {
     @Autowired
     private Web3j web3j;
 
-
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.POST, path = "/account")
     public String createAccount() throws Exception {

@@ -1,5 +1,6 @@
 package com.example.cryptocoffee.blockchainapi.controllers;
 
+import com.example.cryptocoffee.blockchainapi.service.RfidScanner;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
