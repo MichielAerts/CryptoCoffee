@@ -3,6 +3,7 @@ target/
 
 Keystore/
 rfids/
+users/
 
 ### STS ###
 .apt_generated
