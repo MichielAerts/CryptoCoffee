@@ -59,7 +59,9 @@ public class UserController {
             String errorMessage = "{\"error\", \"user with this rfid already exists\"}";
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         } else {
-            String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+            //String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+            String walletFileName = WalletUtils.generateLightNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+
             System.out.println(walletFileName);
             String[] fetchAddress = walletFileName.split("--");
             String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
