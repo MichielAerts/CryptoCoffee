@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.admin.Admin;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 
@@ -34,8 +32,6 @@ public class TransactionController {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.POST, path = "/account")
     public String createAccount() throws Exception {
-        Admin admin = Admin.build(new HttpService("http://192.168.0.34:8042"));
-        System.out.println("Inside");
 
         File dir = new File(properties.getKeystore());
         FilenameFilter filter = new FilenameFilter() {
