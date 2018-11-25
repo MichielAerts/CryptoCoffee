@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.web3j.crypto.CipherException;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -57,13 +59,13 @@ public class UserController {
             String errorMessage = "{\"error\", \"user with this rfid already exists\"}";
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         } else {
-            //String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
-            //System.out.println(walletFileName);
-            //String[] fetchAddress = walletFileName.split("--");
-            //String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
-            String walletAddress = "dummyWallet";
+            String walletFileName = WalletUtils.generateFullNewWalletFile(request.getRfid(),new File(properties.getKeystore()));
+            System.out.println(walletFileName);
+            String[] fetchAddress = walletFileName.split("--");
+            String walletAddress = fetchAddress[fetchAddress.length-1].split("\\.")[0];
+//            String walletAddress = "dummyWallet";
             System.out.println("walletFile Address>>>>>" + "0x" + walletAddress);
-            //System.out.println(web3j.ethAccounts().send().getAccounts());
+            System.out.println(web3j.ethAccounts().send().getAccounts());
             User user = new User(request, walletAddress);
             System.out.println("new user registered: " + user);
             userService.save(user);
