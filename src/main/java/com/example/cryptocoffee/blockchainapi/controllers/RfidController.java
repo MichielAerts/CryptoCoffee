@@ -17,8 +17,7 @@ public class RfidController {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/rfid/registration")
     public ResponseEntity getRfidForRegistration() {
-        String rfid = null;
-        rfid = rfidScanner.getRfidForRegistration();
+        String rfid = rfidScanner.getRfidForRegistration();
         System.out.println("rfid from registration " + rfid);
         if (rfid != null) {
             String rfidJson = "{\"rfid\" : \"" + rfid + "\"}";

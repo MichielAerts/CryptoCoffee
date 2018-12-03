@@ -17,11 +17,24 @@ public class UserService {
         return userRepository.findById(rfid);
     }
 
-    public Optional<User> findByCorporateKey(String id) {
+    private Optional<User> findUserByCorporateKey(String id) {
         return userRepository.findByCorporateKey(id);
     }
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public Optional<String> findWalletAddressByRfid(String rfid) {
+        return findUserByRfid(rfid).map(User::getWalletAddress);
+    }
+
+    public Optional<User> findUser(String id) {
+        Optional<User> user = findUserByRfid(id);
+        if (user.isPresent()) {
+            return user;
+        } else {
+            return findUserByCorporateKey(id);
+        }
     }
 }
