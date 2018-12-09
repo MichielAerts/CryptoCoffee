@@ -37,7 +37,7 @@ public class WalletController {
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/wallet/{id}/balance")
     public ResponseEntity<BigDecimal> getBalance(@PathVariable String id) throws ExecutionException, InterruptedException {
-        BigDecimal ethBalance = walletService.getBalanceinEther(id);
+        BigDecimal ethBalance = walletService.getBalanceInEther(id);
         return new ResponseEntity<BigDecimal>(ethBalance,HttpStatus.OK);
     }
 

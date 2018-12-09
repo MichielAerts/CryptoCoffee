@@ -28,13 +28,14 @@ public class WalletService {
         return web3j.ethAccounts().send().getAccounts();
     }
 
-    public BigDecimal getBalanceinEther(String id) throws InterruptedException, ExecutionException {
+    public BigDecimal getBalanceInEther(String id) throws InterruptedException, ExecutionException {
         EthGetBalance balance = web3j.ethGetBalance(id, DefaultBlockParameterName.LATEST).sendAsync().get();
         return Convert.fromWei(balance.getBalance().toString(), Convert.Unit.ETHER);
     }
 
-    public File getWalletFile(String walletAddress) {
+    public File getWalletFile(String fullWalletAddress) {
         File dir = new File(properties.getKeystore());
+        String walletAddress = fullWalletAddress.startsWith("0x") ? fullWalletAddress.substring(2) : fullWalletAddress;
         String[] files = dir.list((dir1, name) -> name.contains(walletAddress));
         if (files ==  null || files.length == 0) {
             throw new RuntimeException("Wallet address " + walletAddress + " not found");
