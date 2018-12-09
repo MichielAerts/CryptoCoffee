@@ -37,7 +37,7 @@ public class WalletService {
         File dir = new File(properties.getKeystore());
         String[] files = dir.list((dir1, name) -> name.contains(walletAddress));
         if (files ==  null || files.length == 0) {
-            throw new RuntimeException("No wallet address found");
+            throw new RuntimeException("Wallet address " + walletAddress + " not found");
         } else {
             return new File(properties.getKeystore() + "/" + files[0]);
         }
