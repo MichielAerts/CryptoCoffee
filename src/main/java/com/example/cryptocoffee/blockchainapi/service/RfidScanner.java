@@ -1,5 +1,6 @@
 package com.example.cryptocoffee.blockchainapi.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,9 @@ public class RfidScanner {
 
     @Value("${rfid.storage.map}")
     private String RFID_STORAGE_MAP;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @PostConstruct
     public void init() {
@@ -155,6 +159,7 @@ public class RfidScanner {
                     System.out.println("getting rfid in coffee mode");
                     String rfid = getRfid();
                     System.out.println("found rfid " + rfid);
+                    transactionService.payForCoffee(rfid);
                     System.out.println("run coffee making script");
                 } catch (InterruptedException e) {
                     System.out.println("interrupted in coffee thread");
