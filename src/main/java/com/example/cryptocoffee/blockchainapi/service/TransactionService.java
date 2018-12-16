@@ -41,7 +41,7 @@ public class TransactionService {
         Credentials credentials = WalletUtils.loadCredentials(rfId, walletService.getWalletFile(walletAddress));
         TransactionReceipt receipt = Transfer.sendFunds(
                 web3j, credentials, walletAddressBank, amount, Convert.Unit.ETHER).send();
-        System.out.println(receipt.getStatus());
+        System.out.println("Transaction to Bank; Receipt: " + receipt);
         return receipt;
     }
 
@@ -50,7 +50,7 @@ public class TransactionService {
         Credentials credentials = WalletUtils.loadCredentials(pw, walletService.getWalletFile(walletAddressBank));
         TransactionReceipt receipt = Transfer.sendFunds(
                 web3j, credentials, walletAdress, amount, Convert.Unit.ETHER).send();
-        System.out.println(receipt.getStatus());
+        System.out.println("Transaction from Bank; Receipt: " + receipt);
         return receipt;
     }
 
@@ -59,8 +59,7 @@ public class TransactionService {
         Optional<String> walletAdress = userService.findWalletAddressByRfid(rfid);
         if (walletAdress.isPresent()) {
             try {
-                TransactionReceipt transactionReceipt = doTransactionToBank(rfid, walletAdress.get(), BigDecimal.valueOf(1.0));
-                System.out.println(transactionReceipt.getStatus());
+                doTransactionToBank(rfid, walletAdress.get(), BigDecimal.valueOf(1.0));
                 status = true;
             } catch (Exception e) {
                 throw new RuntimeException("Exception during transaction for rfid " + rfid, e);
