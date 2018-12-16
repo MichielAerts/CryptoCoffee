@@ -1,0 +1,34 @@
+geth --identity "miner1" --networkid 42 --datadir "C:\Projecten\ethereum-private-chain-crypto-coffee\miner1" --nodiscover --mine --rpc --rpcport "8042" --port "30303" --unlock 0 --password "C:\Projecten\ethereum-private-chain-crypto-coffee\miner1\password.sec"
+
+# javascript console
+geth attach ipc:\\.\pipe\geth.ipc
+
+#enode
+"enode://4c44c4ce2ba48cb160ea890a12c4605c195ae9091b28d9d77eff130f00018665cc4b7a8c7c308628970f3dd993031c674296f6c3bdc84413fc44f7e8acd1268f@127.0.0.1:30303?discport=0"
+
+#ip laptop
+192.168.1.38
+
+#miner2
+geth --identity "miner2" --networkid 42 --datadir "C:\Projecten\ethereum-private-chain-crypto-coffee\miner2" --nodiscover --mine --rpc --rpcport "8043" --port "30304" --unlock 0 --password "C:\Projecten\ethereum-private-chain-crypto-coffee\miner2\password.sec" --ipcpath "~/Library/Ethereum/geth.ipc"
+
+#enode
+"enode://f329ac805fa3b898854d20cc14c606352db4da63b574480edb1ba57ce7023b7d9ba77beeb29ddd1950a1f87a6d4b20ed58953ba3cf4d0a2091c884d14db81b20@127.0.0.1:30304?discport=0"
+
+Pi:
+0xc07f169b1b2d236c71cbc40e76fc391aa7d04ea5
+#enode
+"enode://fd79f1eec6dfcf9b7e62967db7159319530339c5f8b095f6260a35cd8294f70a0a20fbac930b5698e82382751ad38c605dcf564362bc6a8c424cc6bb07f8e805@192.168.1.39:30303"
+
+Commando's:
+
+eth.getBalance(eth.coinbase)
+web3.fromWei(eth.getBalance(eth.coinbase))
+
+eth.sendTransaction({from: eth.coinbase, to: '0x7f1c4caa58dde9a1e312489f3589daa0f9e6e46f', value: web3.toWei(2000, "ether")})
+"0x866db90bade948dbec0679b0a673807a74d6b3d94b3a7616dd86d72eb8a72e9b"
+"0x7f1c4caa58dde9a1e312489f3589daa0f9e6e46f"
+
+Rfids
+1. C191AA02
+2. 410B5402
