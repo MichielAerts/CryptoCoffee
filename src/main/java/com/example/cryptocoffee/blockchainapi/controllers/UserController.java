@@ -6,6 +6,7 @@ import com.example.cryptocoffee.blockchainapi.service.TransactionService;
 import com.example.cryptocoffee.blockchainapi.service.UserService;
 import com.example.cryptocoffee.blockchainapi.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,9 @@ public class UserController {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Value("${account.initialFunds}")
+    private String initialFunds;
 
     @CrossOrigin("*")
     @RequestMapping(method = RequestMethod.GET, path = "/user/{id}")
@@ -57,8 +61,8 @@ public class UserController {
             userService.save(user);
             System.out.println("New user registered: " + user + ". All current wallets: " + walletService.getWallets());
 
-            //TODO fix and test transacties
-            TransactionReceipt transactionReceipt = transactionService.doTransactionFromBank(walletAddress, BigDecimal.valueOf(1.0));
+            TransactionReceipt transactionReceipt = transactionService.doTransactionFromBank(
+                    walletAddress, new BigDecimal(initialFunds));
             return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
         }
     }

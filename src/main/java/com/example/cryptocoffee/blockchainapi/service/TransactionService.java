@@ -25,10 +25,10 @@ public class TransactionService {
     @Autowired
     private Web3j web3j;
 
-    @Value("${walletAddressBank}")
+    @Value("${bank.wallet.address}")
     private String walletAddressBank;
 
-    @Value("${passwordFileBank}")
+    @Value("${bank.wallet.passwordFile}")
     private String passwordFileBank;
 
     @Autowired
